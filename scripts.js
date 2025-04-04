@@ -16,7 +16,16 @@ document.addEventListener("DOMContentLoaded", function () {
             let chatButton = document.createElement("button");
             chatButton.textContent = chat.name;
             chatButton.classList.add("chat-btn");
-            chatButton.onclick = () => switchChat(chat.id);
+            
+            // Добавляем класс active, если это текущий чат
+            if (chat.id === currentChatId) {
+                chatButton.classList.add("active");
+            }
+            
+            chatButton.onclick = function () {
+                switchChat(chat.id);
+            };
+
             chatList.appendChild(chatButton);
         });
     }
@@ -26,6 +35,7 @@ document.addEventListener("DOMContentLoaded", function () {
         currentChatId = chatId;
         chatTitle.textContent = chats.find(c => c.id === chatId).name;
         renderMessages();
+        updateChatList(); // Обновляем список, чтобы подсветить текущий чат
     }
 
     // 🔹 Создание нового чата
