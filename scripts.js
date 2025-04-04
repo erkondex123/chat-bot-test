@@ -5,8 +5,73 @@ document.addEventListener("DOMContentLoaded", function () {
     const chatList = document.getElementById("chat-list");
     const chatBox = document.getElementById("chat-box");
 
-    let chats = JSON.parse(localStorage.getItem("chats")) || {};
-    let currentChatId = Object.keys(chats)[0] || createFirstChat();
+let chats = [{ id: 1, name: "Чат 1", messages: [] }];
+let currentChatId = 1;
+
+// Функция для обновления списка чатов
+function updateChatList() {
+    let chatListContainer = document.getElementById("chat-list");
+    chatListContainer.innerHTML = ""; // Очищаем список перед обновлением
+
+    chats.forEach(chat => {
+        let chatButton = document.createElement("button");
+        chatButton.textContent = chat.name;
+        chatButton.classList.add("chat-btn");
+        chatButton.onclick = () => switchChat(chat.id);
+        chatListContainer.appendChild(chatButton);
+    });
+}
+
+// Функция для переключения чата
+function switchChat(chatId) {
+    currentChatId = chatId;
+    document.getElementById("current-chat-name").textContent = chats.find(c => c.id === chatId).name;
+    renderMessages();
+}
+
+// Функция для создания нового чата
+function createNewChat() {
+    let newChatId = chats.length + 1;
+    let newChat = { id: newChatId, name: `Чат ${newChatId}`, messages: [] };
+    chats.push(newChat);
+    updateChatList();
+    switchChat(newChatId);
+}
+
+// Функция для отображения сообщений текущего чата
+function renderMessages() {
+    let chatWindow = document.getElementById("chat-window");
+    chatWindow.innerHTML = "";
+    
+    let chat = chats.find(c => c.id === currentChatId);
+    chat.messages.forEach(msg => {
+        let messageDiv = document.createElement("div");
+        messageDiv.classList.add(msg.sender === "user" ? "user-message" : "bot-message");
+        messageDiv.textContent = msg.text;
+        chatWindow.appendChild(messageDiv);
+    });
+}
+
+// Функция отправки сообщения
+function sendMessage() {
+    let input = document.getElementById("chat-input");
+    let text = input.value.trim();
+    if (text === "") return;
+
+    let chat = chats.find(c => c.id === currentChatId);
+    chat.messages.push({ sender: "user", text: text });
+    chat.messages.push({ sender: "bot", text: "Я пока не знаю ответа, но скоро найду его!" });
+
+    input.value = "";
+    renderMessages();
+}
+
+// Первичная инициализация
+document.getElementById("new-chat-btn").onclick = createNewChat;
+document.getElementById("send-btn").onclick = sendMessage;
+updateChatList();
+switchChat(1);
+
 
     renderChatHistory();
     loadChat(currentChatId);
