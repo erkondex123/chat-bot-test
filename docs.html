@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Документация</title>
+    <style>
+        body {
+            background-color: #111;
+            color: white;
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+        .navbar {
+            background: #222;
+            padding: 10px;
+            text-align: center;
+        }
+        .navbar a {
+            color: white;
+            text-decoration: none;
+            margin: 0 15px;
+            font-size: 18px;
+            transition: 0.3s;
+        }
+        .navbar a:hover {
+            color: cyan;
+        }
+        .container {
+            max-width: 900px;
+            margin: 50px auto;
+            padding: 20px;
+            background: #1a1a1a;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(255, 255, 255, 0.1);
+        }
+        h1, h2 {
+            text-align: center;
+            color: cyan;
+        }
+        p {
+            line-height: 1.6;
+        }
+        .section {
+            margin-bottom: 30px;
+        }
+        .code {
+            background: #222;
+            padding: 10px;
+            border-radius: 5px;
+            font-family: monospace;
+            white-space: pre-wrap;
+            overflow-x: auto;
+        }
+        .highlight {
+            color: cyan;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="navbar">
+        <a href="index.html">Главная</a>
+        <a href="chat.html">Чат</a>
+        <a href="about.html">О боте</a>
+        <a href="contacts.html">Контакты</a>
+        <a href="docs.html">Документация</a>
+    </div>
+
+    <div class="container">
+        <h1>📖 Документация по чат-боту</h1>
+
+        <div class="section">
+            <h2>1. 🔧 Введение</h2>
+            <p>
+                Этот чат-бот создан для помощи пользователям в текстовом формате.  
+                Он умеет поддерживать диалог, анализировать запросы и давать ответы.  
+                В будущем его возможности будут расширены за счет ИИ и интеграции с API.
+            </p>
+        </div>
+
+        <div class="section">
+            <h2>2. 🚀 Основные функции</h2>
+            <ul>
+                <li>💬 Текстовая переписка с пользователем</li>
+                <li>📚 Запоминание истории чатов</li>
+                <li>⚡ Мгновенная генерация ответов</li>
+                <li>🔄 Возможность переключения между чатами</li>
+                <li>🔗 Будущая интеграция с внешними сервисами</li>
+            </ul>
+        </div>
+
+        <div class="section">
+            <h2>3. 📡 API для взаимодействия</h2>
+            <p>
+                Для работы с ботом можно использовать API-запросы. Пример запроса на отправку сообщения:
+            </p>
+            <div class="code">
+                POST /api/chat/send  
+                Content-Type: application/json  
+                {  
+                    "chat_id": "12345",  
+                    "message": "Привет, бот!"  
+                }
+            </div>
+            <p>Ответ API:</p>
+            <div class="code">
+                {  
+                    "response": "Привет! Чем могу помочь?",  
+                    "timestamp": "2025-04-04T12:34:56Z"  
+                }
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>4. ⚙️ Настройка и развертывание</h2>
+            <p>Для запуска бота локально выполните:</p>
+            <div class="code">
+                git clone https://github.com/your-bot-repo.git  
+                cd your-bot-repo  
+                npm install  
+                npm start
+            </div>
+            <p>Бот будет запущен на <span class="highlight">http://localhost:3000</span></p>
+        </div>
+
+        <div class="section">
+            <h2>5. 📅 Будущие обновления</h2>
+            <p>Мы планируем добавить:</p>
+            <ul>
+                <li>🎙️ Голосовое управление</li>
+                <li>📢 Отправку уведомлений</li>
+                <li>🤖 Улучшенный ИИ-алгоритм</li>
+                <li>🌐 Поддержку нескольких языков</li>
+            </ul>
+        </div>
+
+        <div class="section">
+            <h2>6. 🛠️ Поддержка</h2>
+            <p>
+                Если у вас есть вопросы или предложения, напишите нам через <a href="contacts.html" style="color: cyan;">форму обратной связи</a>.
+            </p>
+        </div>
+
+    </div>
+
+</body>
+</html>

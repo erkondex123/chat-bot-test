@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Чат</title>
+    <style>
+        body {
+            background-color: #111;
+            color: white;
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+        }
+        .navbar {
+            background: #222;
+            padding: 10px;
+            text-align: center;
+        }
+        .navbar a {
+            color: white;
+            text-decoration: none;
+            margin: 0 15px;
+            font-size: 18px;
+            transition: 0.3s;
+        }
+        .navbar a:hover {
+            color: cyan;
+        }
+        .main-container {
+            display: flex;
+            flex: 1;
+            height: calc(100vh - 50px);
+        }
+        .chat-history {
+            width: 30%;
+            background: #1a1a1a;
+            padding: 20px;
+            border-right: 2px solid #333;
+            overflow-y: auto;
+        }
+        .chat-history h2 {
+            text-align: center;
+            margin-bottom: 10px;
+            color: cyan;
+        }
+        .chat-list {
+            list-style: none;
+            padding: 0;
+        }
+        .chat-list li {
+            background: #222;
+            margin: 10px 0;
+            padding: 10px;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: 0.3s;
+        }
+        .chat-list li:hover {
+            background: cyan;
+            color: black;
+        }
+        .new-chat-btn {
+            display: block;
+            width: 100%;
+            padding: 10px;
+            margin-top: 10px;
+            background: cyan;
+            color: black;
+            border: none;
+            cursor: pointer;
+            border-radius: 5px;
+            font-weight: bold;
+            transition: 0.3s;
+        }
+        .new-chat-btn:hover {
+            background: white;
+        }
+        .chat-container {
+            width: 70%;
+            display: flex;
+            flex-direction: column;
+            padding: 20px;
+        }
+        .chat-title {
+            text-align: center;
+            font-size: 20px;
+            color: cyan;
+            margin-bottom: 10px;
+        }
+        .chat-box {
+            flex: 1;
+            border: 2px solid #333;
+            padding: 10px;
+            overflow-y: auto;
+            background: black;
+            border-radius: 5px;
+            display: flex;
+            flex-direction: column;
+        }
+        .message {
+            max-width: 70%;
+            padding: 10px;
+            margin: 5px 0;
+            border-radius: 8px;
+            word-wrap: break-word;
+        }
+        .user-message {
+            background: cyan;
+            color: black;
+            align-self: flex-end;
+        }
+        .bot-message {
+            background: #222;
+            color: white;
+            align-self: flex-start;
+        }
+        .input-container {
+            display: flex;
+            margin-top: 10px;
+        }
+        input {
+            flex: 1;
+            padding: 10px;
+            background: #222;
+            color: white;
+            border: none;
+            border-radius: 5px;
+        }
+        button {
+            padding: 10px 15px;
+            margin-left: 5px;
+            background: cyan;
+            color: black;
+            border: none;
+            cursor: pointer;
+            border-radius: 5px;
+            font-weight: bold;
+        }
+        button:hover {
+            background: white;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="navbar">
+        <a href="index.html">Главная</a>
+        <a href="chat.html">Чат</a>
+        <a href="about.html">О боте</a>
+        <a href="contacts.html">Контакты</a>
+        <a href="docs.html">Документация</a>
+    </div>
+
+    <div class="main-container">
+        <!-- История чатов -->
+        <div class="chat-history">
+            <h2>История чатов</h2>
+            <ul class="chat-list" id="chatList">
+                <li onclick="switchChat(0)">Чат 1</li>
+            </ul>
+            <button class="new-chat-btn" onclick="createNewChat()">+ Новый чат</button>
+        </div>
+
+        <!-- Окно чата -->
+        <div class="chat-container">
+            <h2 class="chat-title" id="chatTitle">Чат 1</h2>
+            <div class="chat-box" id="chatBox"></div>
+            <div class="input-container">
+                <input type="text" id="userInput" placeholder="Введите сообщение..." onkeypress="handleKeyPress(event)">
+                <button onclick="sendMessage()">Отправить</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let chatCounter = 1;
+        let currentChat = 0;
+        let chatHistory = { 0: [] };
+
+        function createNewChat() {
+            chatCounter++;
+            let chatList = document.getElementById("chatList");
+            let newChat = document.createElement("li");
+            newChat.innerText = "Чат " + chatCounter;
+            newChat.onclick = function () { switchChat(chatCounter - 1); };
+            chatList.appendChild(newChat);
+            chatHistory[chatCounter - 1] = [];
+            switchChat(chatCounter - 1);
+        }
+
+        function switchChat(chatIndex) {
+            currentChat = chatIndex;
+            document.getElementById("chatTitle").innerText = "Чат " + (chatIndex + 1);
+            let chatBox = document.getElementById("chatBox");
+            chatBox.innerHTML = "";
+            chatHistory[chatIndex].forEach(msg => {
+                let msgElement = document.createElement("div");
+                msgElement.innerText = msg.text;
+                msgElement.className = "message " + (msg.sender === "user" ? "user-message" : "bot-message");
+                chatBox.appendChild(msgElement);
+            });
+        }
+
+        function sendMessage() {
+            let input = document.getElementById("userInput");
+            let message = input.value.trim();
+            if (message === "") return;
+
+            let chatBox = document.getElementById("chatBox");
+
+            // Сообщение пользователя
+            let userMsg = document.createElement("div");
+            userMsg.innerText = message;
+            userMsg.className = "message user-message";
+            chatBox.appendChild(userMsg);
+            chatHistory[currentChat].push({ sender: "user", text: message });
+
+            // Ответ бота
+            let botMsg = document.createElement("div");
+            botMsg.innerText = "Я пока не знаю ответа, но скоро найду его!";
+            botMsg.className = "message bot-message";
+            chatBox.appendChild(botMsg);
+            chatHistory[currentChat].push({ sender: "bot", text: "Я пока не знаю ответа, но скоро найду его!" });
+
+            input.value = "";
+            chatBox.scrollTop = chatBox.scrollHeight;
+        }
+
+        function handleKeyPress(event) {
+            if (event.key === "Enter") {
+                sendMessage();
+            }
+        }
+    </script>
+
+</body>
+</html>
